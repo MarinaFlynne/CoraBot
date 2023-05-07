@@ -5,6 +5,7 @@ from discord.ext import commands
 
 TOKEN = "MTEwMjM2MzIwOTcwMjMyNjM4Mg.GiBXht.1Ya9KFlS9lNiGu2dOjoaXc7X6UOJ4jRnLEJQXA"
 
+
 async def send_message(message, user_message, is_private):
     try:
         response = responses.get_response(user_message)
@@ -19,7 +20,7 @@ def run_discord_bot():
     # intents.message_content = True
     # client = discord.Client(intents=intents)
     # tree = app_commands.CommandTree(client) # defines the command tree
-    bot = commands.Bot(command_prefix="!", intents= discord.Intents.all())
+    bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
     @bot.event
     async def on_ready():
@@ -38,7 +39,7 @@ def run_discord_bot():
 
     # say command
     @bot.tree.command(name="say", guild=discord.Object(id=705499607102259230))
-    @app_commands.describe(arg = "What should I say?")
+    @app_commands.describe(arg="What should I say?")
     async def say(interaction: discord.Interaction, arg: str):
         await interaction.response.send_message(f"{interaction.user.name} said: '{arg}'")
 
@@ -48,13 +49,7 @@ def run_discord_bot():
     async def say(interaction: discord.Interaction, game: str):
         await interaction.response.send_message(f"{interaction.user.name} said: '{game}'")
 
-
-
     bot.run(TOKEN)
-
-
-
-
 
     # @client.event
     # async def on_ready():
