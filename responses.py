@@ -13,3 +13,9 @@ def get_response(message: str) -> str:
         return "example help message"
 
     return 'I didn\'t understand what you wrote. Try typing "!help".'
+
+def current_splatoon_stages():
+    """
+    returns a discord formatted string of the current splatoon stages
+    :return: formatted str of the current splatoon stages
+    """
