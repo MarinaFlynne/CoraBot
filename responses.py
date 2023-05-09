@@ -1,4 +1,5 @@
 import random
+from splatoon.splatoon import *
 
 
 def get_response(message: str) -> str:
