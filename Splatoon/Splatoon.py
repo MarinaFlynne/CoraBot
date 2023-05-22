@@ -1,4 +1,5 @@
 import json
+from typing import NamedTuple
 from urllib import request
 from urllib.request import Request, urlopen
 import pandas as pd
@@ -9,24 +10,34 @@ Python tool to get splatoon data schedule data from the web
 """
 
 
+class Stage(NamedTuple):
+    """class that represents a splatoon stage"""
+    start_time: int
+    end_time: int
+    name: str
+    img: str
+
+    def __str__(self) -> str:
+        return f'<t:{self.start_time}:t>-<t:{self.end_time}:t>\n{self.name}\n{self.img}\n'
+
+
 def main():
-    df = get_json("https://splatoon3.ink/data/schedules.json")
-    current_stages = df['data.regularSchedules.nodes'].tolist()
-    current_stages = current_stages[0][0]
-    stage_values: dict = get_stage_values_dict(current_stages)
-    print(stage_values)
+    stages = get_cur_regular_stages()
+    print(stages[0], stages[1])
 
 
-def get_cur_regular_stages() -> dict:
+def get_cur_regular_stages() -> list:
     """
-    gets the current regular stage information from the web and returns it in a dictionary
-    :return: regular stage information as a dictionary
+    gets the current regular stage information from the web
+    :return: regular stage information as a list of stages
     """
     df = get_json("https://splatoon3.ink/data/schedules.json")
     current_stages = df['data.regularSchedules.nodes'].tolist()
     current_stages = current_stages[0][0]
-    stage_values: dict = get_stage_values_dict(current_stages)
-    return stage_values
+    vals: dict = get_stage_values_dict(current_stages)
+    stage_1 = Stage(vals['start_time'], vals['end_time'], vals['stage1_name'], vals['stage1_image'])
+    stage_2 = Stage(vals['start_time'], vals['end_time'], vals['stage2_name'], vals['stage2_image'])
+    return [stage_1, stage_2]
 
 
 def get_stage_values_dict(current_stages: pd.DataFrame) -> dict:

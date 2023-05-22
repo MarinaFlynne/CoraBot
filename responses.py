@@ -1,5 +1,5 @@
 import random
-from splatoon.splatoon import *
+# from splatoon.splatoon import *
 
 
 def get_response(message: str) -> str:
@@ -20,3 +20,4 @@ def current_splatoon_stages():
     returns a discord formatted string of the current splatoon stages
     :return: formatted str of the current splatoon stages
     """
+    pass

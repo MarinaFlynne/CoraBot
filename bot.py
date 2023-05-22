@@ -2,6 +2,7 @@ import responses
 import discord
 from discord import app_commands
 from discord.ext import commands
+import Splatoon.Splatoon as splat
 
 TOKEN = "MTEwMjM2MzIwOTcwMjMyNjM4Mg.GiBXht.1Ya9KFlS9lNiGu2dOjoaXc7X6UOJ4jRnLEJQXA"
 
@@ -34,8 +35,9 @@ def run_discord_bot():
     # hello command
     @bot.tree.command(name="hello", guild=discord.Object(id=705499607102259230))
     async def hello(interaction: discord.Interaction):
-        await interaction.response.send_message(f"Hello {interaction.user.mention}! This is a slash command",
-                                                ephemeral=False)
+        stages = splat.get_cur_regular_stages()
+        message = f'{stages[0]}\n{stages[1]}'
+        await interaction.response.send_message(message, ephemeral=False)
 
     # say command
     @bot.tree.command(name="say", guild=discord.Object(id=705499607102259230))
@@ -48,6 +50,12 @@ def run_discord_bot():
     @app_commands.describe(game="Enter a game name")
     async def say(interaction: discord.Interaction, game: str):
         await interaction.response.send_message(f"{interaction.user.name} said: '{game}'")
+
+    @bot.tree.command(name="stages", guild=discord.Object(id=705499607102259230))
+    async def hello(interaction: discord.Interaction):
+        stages = splat.get_cur_regular_stages()
+        message = f'{stages[0]}\n{stages[1]}'
+        await interaction.response.send_message(message, ephemeral=False)
 
     bot.run(TOKEN)
 
