@@ -32,30 +32,13 @@ def run_discord_bot():
         except Exception as e:
             print(e)
 
-    # hello command
-    @bot.tree.command(name="hello", guild=discord.Object(id=705499607102259230))
-    async def hello(interaction: discord.Interaction):
-        stages = splat.get_cur_regular_stages()
-        message = f'{stages[0]}\n{stages[1]}'
-        await interaction.response.send_message(message, ephemeral=False)
-
-    # say command
-    @bot.tree.command(name="say", guild=discord.Object(id=705499607102259230))
-    @app_commands.describe(arg="What should I say?")
-    async def say(interaction: discord.Interaction, arg: str):
-        await interaction.response.send_message(f"{interaction.user.name} said: '{arg}'")
-
-    # gamestop price command
-    @bot.tree.command(name="gamestop", guild=discord.Object(id=705499607102259230))
-    @app_commands.describe(game="Enter a game name")
-    async def say(interaction: discord.Interaction, game: str):
-        await interaction.response.send_message(f"{interaction.user.name} said: '{game}'")
-
     @bot.tree.command(name="stages", guild=discord.Object(id=705499607102259230))
-    async def hello(interaction: discord.Interaction):
-        stages = splat.get_cur_regular_stages()
-        message = f'{stages[0]}\n{stages[1]}'
-        await interaction.response.send_message(message, ephemeral=False)
+    async def stages(interaction: discord.Interaction):
+        stages = responses.get_stages_embed()
+        # message = f'{stages[0]}\n{stages[1]}'
+        # await interaction.response.send_message(message, ephemeral=False)
+        await interaction.response.send_message(embed=stages)
+
 
     bot.run(TOKEN)
 
@@ -82,3 +65,22 @@ def run_discord_bot():
     #         await send_message(message, user_message, is_private=False)
     #
     # client.run(TOKEN)
+
+# # hello command
+#     @bot.tree.command(name="hello", guild=discord.Object(id=705499607102259230))
+#     async def hello(interaction: discord.Interaction):
+#         stages = splat.get_cur_regular_stages()
+#         message = f'{stages[0]}\n{stages[1]}'
+#         await interaction.response.send_message(message, ephemeral=False)
+#
+#     # say command
+#     @bot.tree.command(name="say", guild=discord.Object(id=705499607102259230))
+#     @app_commands.describe(arg="What should I say?")
+#     async def say(interaction: discord.Interaction, arg: str):
+#         await interaction.response.send_message(f"{interaction.user.name} said: '{arg}'")
+#
+#     # gamestop price command
+#     @bot.tree.command(name="gamestop", guild=discord.Object(id=705499607102259230))
+#     @app_commands.describe(game="Enter a game name")
+#     async def say(interaction: discord.Interaction, game: str):
+#         await interaction.response.send_message(f"{interaction.user.name} said: '{game}'")
