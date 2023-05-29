@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import responses
 import discord
 from discord import app_commands
@@ -35,10 +37,33 @@ def run_discord_bot():
     @bot.tree.command(name="stages", guild=discord.Object(id=705499607102259230))
     async def stages(interaction: discord.Interaction):
         stages = responses.get_stages_embed()
-        # message = f'{stages[0]}\n{stages[1]}'
-        # await interaction.response.send_message(message, ephemeral=False)
-        await interaction.response.send_message(embed=stages)
+        image = splat.main()
+        # image = image.resize((200, 200))
+        # image.show()
+        image_bytes = BytesIO()
+        image.save(image_bytes, format='PNG')
+        image_bytes.seek(0)
+        # # Create a File object from the PIL image bytes
+        file = discord.File(image_bytes, filename="image.png")
+        stages.set_image(url="attachment://image.png")
 
+        await interaction.response.send_message(file=file, embed=stages)
+
+    # test command
+    @bot.tree.command(name="test", guild=discord.Object(id=705499607102259230))
+    async def test(interaction: discord.Interaction):
+        stages = responses.get_stages_embed()
+        image = splat.main()
+        image = image.resize((200, 200))
+        # image.show()
+        image_bytes = BytesIO()
+        image.save(image_bytes, format='PNG')
+        image_bytes.seek(0)
+        # # Create a File object from the PIL image bytes
+        file = discord.File(image_bytes, filename="image.png")
+        stages.set_image(url="attachment://image.png")
+
+        await interaction.response.send_message(file=file, embed=stages)
 
     bot.run(TOKEN)
 

@@ -1,13 +1,41 @@
 import json
+from io import BytesIO
 from typing import NamedTuple
 from urllib import request
 from urllib.request import Request, urlopen
 import pandas as pd
 from datetime import datetime, timezone
+import discord
+
+import requests
+from PIL import Image
 
 """
 Python tool to get splatoon data schedule data from the web
 """
+
+
+def main():
+    img1 = "https://splatoon3.ink/assets/splatnet/v1/stage_img/icon/low_resolution/f14c2a64e49d243679fc0884af91e1a07dc65600f9b90aefe92d7790dcffb191_1.png"
+    img2 = "https://splatoon3.ink/assets/splatnet/v1/stage_img/icon/low_resolution/a8ba96c3dbd015b7bc6ea4fa067245c4e9aee62b6696cb41e02d35139dd21fe7_1.png"
+    merged_img = merge_images(img1, img2)
+    return merged_img
+
+
+def merge_images(img1_url: str, img2_url: str):
+    img1 = create_pil_image_from_url(img1_url)
+    img2 = create_pil_image_from_url(img2_url)
+    new_image = Image.new('RGB', (2 * img1.size[0]+10, img1.size[1]), (0, 0, 0))
+    new_image.paste(img1, (0, 0))
+    new_image.paste(img2, (img1.size[0]+10, 0))
+    return new_image
+
+
+def create_pil_image_from_url(url: str) -> Image.Image:
+    response = requests.get(url)
+    image_data = response.content
+    pil_image = Image.open(BytesIO(image_data))
+    return pil_image
 
 
 class Stage(NamedTuple):
@@ -19,11 +47,6 @@ class Stage(NamedTuple):
 
     def __str__(self) -> str:
         return f'<t:{self.start_time}:t>-<t:{self.end_time}:t>\n{self.name}\n{self.img}\n'
-
-
-def main():
-    stages = get_cur_regular_stages()
-    print(stages[0], stages[1])
 
 
 def get_cur_regular_stages() -> list:
