@@ -46,12 +46,18 @@ def run_discord_bot():
     async def on_ready():
         print("Bot is up and ready!")
         try:
-            synced = await bot.tree.sync(guild=discord.Object(id=705499607102259230))
+            # check if the config file has the guild_id set.
+            # The guild ID determines which discord server the bot will work on.
+            # Mostly for testing purposes. Slash commands take a while to update if you don't set a guild ID.
+            if "guild_id" in config and ("guild_id" != "12345" or "guild_id" != ""):
+                synced = await bot.tree.sync(guild=discord.Object(id=config["guild_id"]))
+            else:
+                synced = await bot.tree.sync()
             print(f"Synced {len(synced)} command(s)")
         except Exception as e:
             print(e)
 
-    @bot.tree.command(name="stages", guild=discord.Object(id=705499607102259230))
+    @bot.tree.command(name="stages", guild=discord.Object(id=config["guild_id"]))
     async def stages(interaction: discord.Interaction):
         stages = responses.get_stages_embed()
         image = Splat.main() # TODO fix
