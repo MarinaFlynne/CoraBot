@@ -58,15 +58,9 @@ def run_discord_bot():
             print(e)
 
     @bot.tree.command(name="stages", guild=discord.Object(id=config["guild_id"]))
-    async def stages(interaction: discord.Interaction):
-        stages = responses.get_stages_embed()
-        image = Splat.main() # TODO fix
-        image_bytes = BytesIO()
-        image.save(image_bytes, format='PNG')
-        image_bytes.seek(0)
-        # Create a File object from the PIL image bytes
-        file = discord.File(image_bytes, filename="image.png")
-        stages.set_image(url="attachment://image.png")
+    @app_commands.describe(type="Choose the match type: regular, battle")
+    async def stages(interaction: discord.Interaction, type: str):
+        file, stages = responses.get_stages_embed(type)
 
         await interaction.response.send_message(file=file, embed=stages)
 
