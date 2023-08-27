@@ -1,2 +1,4 @@
 # enter your discord bot token below:
 token = 12345
+# for testing purposes if you only want the bot to work on a single guild
+guild_id = 
